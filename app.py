@@ -37,7 +37,6 @@ procesos = [
     ("Dra. Rosa Guadalupe", "SEDENA", "Gases", [1.0, 1.0, 0.8, 0.0, 0.0]),
 ]
 
-
 # =========================
 # CSS
 # =========================
@@ -295,63 +294,82 @@ st.markdown(textwrap.dedent("""
     }
 
     .stage-header {
-    display: grid;
-    grid-template-columns: 2.2fr 1fr 1.3fr repeat(5, 1fr);
-    margin-bottom: 8px;
-    column-gap: 8px;
-    align-items: center;
-}
+        display: grid;
+        grid-template-columns: 2.4fr 1.1fr 1.4fr repeat(5, 1fr);
+        margin-bottom: 10px;
+        column-gap: 8px;
+        align-items: center;
+    }
 
-.process-row {
-    display: grid;
-    grid-template-columns: 2.2fr 1fr 1.3fr repeat(5, 1fr);
-    align-items: center;
-    margin-bottom: 12px;
-    column-gap: 8px;
-}
+    .process-row {
+        display: grid;
+        grid-template-columns: 2.4fr 1.1fr 1.4fr repeat(5, 1fr);
+        align-items: center;
+        margin-bottom: 12px;
+        column-gap: 8px;
+    }
 
-.text-cell {
-    color: var(--text);
-    font-size: 17px;
-    display: flex;
-    align-items: center;
-    min-height: 18px;
-}
+    .stage-name {
+        text-align: center;
+        color: var(--text);
+        font-size: 16px;
+        font-weight: 700;
+    }
 
-.inst-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 700;
-    width: fit-content;
-}
+    .text-cell {
+        color: var(--text);
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        min-height: 18px;
+    }
 
-.inst-imss {
-    background: #eaf0ff;
-    color: #315fd3;
-}
+    .text-cell-left {
+        color: var(--text);
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        min-height: 18px;
+        text-align: left;
+    }
 
-.inst-issste {
-    background: #fff1e7;
-    color: #e87722;
-}
+    .inst-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+        width: fit-content;
+    }
 
-.inst-sedena {
-    background: #eef1f4;
-    color: #364152;
-}
+    .inst-imss {
+        background: #eaf0ff;
+        color: #315fd3;
+    }
 
-.sol-cell {
-    color: var(--text);
-    font-size: 16px;
-    font-weight: 600;
-}
+    .inst-issste {
+        background: #fff1e7;
+        color: #e87722;
+    }
+
+    .inst-sedena {
+        background: #eef1f4;
+        color: #364152;
+    }
+
+    .sol-cell {
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+    }
 
     .proc-track {
         height: 18px;
         background: #eceaf4;
-        border-right: 1px solid #f8f7fb;
+        border-radius: 2px;
+        overflow: hidden;
     }
 
     .fill-blue {
@@ -364,37 +382,18 @@ st.markdown(textwrap.dedent("""
         background: linear-gradient(90deg, #f08d1d 0%, #ff9800 100%);
     }
 
-    .legend {
-        display: flex;
-        gap: 24px;
-        margin-top: 10px;
-        font-size: 16px;
-        color: var(--text);
-        align-items: center;
+    .fill-gray {
+        height: 100%;
+        background: linear-gradient(90deg, #7f8aa3 0%, #98a3bb 100%);
     }
 
-    .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .legend-box {
-        width: 18px;
-        height: 18px;
-        border-radius: 3px;
-    }
-
-    .legend-imss {
-        background: linear-gradient(90deg, #5d84e5 0%, #87a6f5 100%);
-    }
-
-    .legend-issste {
-        background: linear-gradient(90deg, #f08d1d 0%, #ff9800 100%);
+    .row-divider {
+        height: 1px;
+        background: #efedf4;
+        margin: 8px 0 12px 0;
     }
 </style>
 """), unsafe_allow_html=True)
-
 
 # =========================
 # HEADER
@@ -458,7 +457,6 @@ with c6:
 
 st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
 
-
 # =========================
 # KPIS
 # =========================
@@ -482,7 +480,6 @@ for col, (title, value, sub, kind) in zip(kpi_cols, kpis):
     col.markdown(html, unsafe_allow_html=True)
 
 st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
-
 
 # =========================
 # AVANCE + CALENDARIO
@@ -549,7 +546,6 @@ with right:
 
 st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
 
-
 # =========================
 # CRONOGRAMA
 # =========================
@@ -557,7 +553,9 @@ html = textwrap.dedent("""
 <div class="panel">
     <div class="panel-title">Cronograma de Procesos</div>
     <div class="stage-header">
-        <div></div>
+        <div class="stage-name" style="text-align:left;">Decisor</div>
+        <div class="stage-name">Institución</div>
+        <div class="stage-name">Solución</div>
         <div class="stage-name">Contactos</div>
         <div class="stage-name">Interés</div>
         <div class="stage-name">Presentación</div>
@@ -566,17 +564,27 @@ html = textwrap.dedent("""
     </div>
 """)
 
-for idx, (icono, nombre, vals) in enumerate(procesos):
+for idx, (nombre, institucion, solucion, vals) in enumerate(procesos):
+    if institucion.upper() == "IMSS":
+        badge_class = "inst-badge inst-imss"
+        fill_class = "fill-blue"
+    elif institucion.upper() == "ISSSTE":
+        badge_class = "inst-badge inst-issste"
+        fill_class = "fill-orange"
+    else:
+        badge_class = "inst-badge inst-sedena"
+        fill_class = "fill-gray"
+
     html += textwrap.dedent(f"""
     <div class="process-row">
-        <div class="process-name">
-            <div class="proc-icon">{icono}</div>
-            <div>{nombre}</div>
+        <div class="text-cell-left">{nombre}</div>
+        <div class="text-cell" style="justify-content:center;">
+            <span class="{badge_class}">{institucion}</span>
         </div>
+        <div class="sol-cell">{solucion}</div>
     """)
 
-    for j, v in enumerate(vals):
-        fill_class = "fill-orange" if (idx == 0 and j == 0) else "fill-blue"
+    for v in vals:
         html += textwrap.dedent(f"""
         <div class="proc-track">
             <div class="{fill_class}" style="width:{int(v * 100)}%"></div>
@@ -585,12 +593,6 @@ for idx, (icono, nombre, vals) in enumerate(procesos):
 
     html += "</div>"
 
-html += textwrap.dedent("""
-    <div class="legend">
-        <div class="legend-item"><div class="legend-box legend-imss"></div> IMSS</div>
-        <div class="legend-item"><div class="legend-box legend-issste"></div> ISSSTE</div>
-    </div>
-</div>
-""")
+html += "</div>"
 
 st.markdown(html, unsafe_allow_html=True)
