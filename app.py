@@ -26,9 +26,9 @@ instituciones = [
 ]
 
 eventos = [
-    ("11", "Presentación IMSS", "Dr. Miguel 2", "blue"),
-    ("17", "Seguimiento ISSSTE", "Pora Basilio", "light"),
-    ("21", "Revisión SEDENA", "Dra. Mesa Correa", "soft"),
+    ("11", "JUN", "Presentación IMSS", "Dr. Miguel Ángel Sosa", "blue"),
+    ("17", "JUN", "Seguimiento ISSSTE", "Lic. Reyna Basilio", "light"),
+    ("21", "JUN", "Revisión SEDENA", "Dra. Mesa Correa", "soft"),
 ]
 
 procesos = [
@@ -261,9 +261,12 @@ st.markdown(textwrap.dedent("""
     }
 
     .event-card {
-        border-radius: 4px;
-        padding: 10px 12px;
+        display: flex;
+        gap: 14px;
+        padding: 12px;
+        border-radius: 6px;
         margin-bottom: 10px;
+        align-items: center;
     }
 
     .event-blue {
@@ -281,6 +284,36 @@ st.markdown(textwrap.dedent("""
         color: var(--text);
     }
 
+    .event-date {
+        width: 60px;
+        min-width: 60px;
+        background: rgba(255,255,255,0.92);
+        border-radius: 6px;
+        text-align: center;
+        padding: 6px;
+        font-weight: 700;
+    }
+
+    .event-day {
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1;
+        color: #131a46;
+    }
+
+    .event-month {
+        font-size: 11px;
+        opacity: 0.75;
+        margin-top: 3px;
+        color: #131a46;
+        letter-spacing: 0.5px;
+    }
+
+    .event-info {
+        display: flex;
+        flex-direction: column;
+    }
+
     .event-main {
         font-size: 18px;
         font-weight: 800;
@@ -290,7 +323,8 @@ st.markdown(textwrap.dedent("""
     .event-sub {
         font-size: 14px;
         line-height: 1.1;
-        margin-top: 2px;
+        margin-top: 4px;
+        opacity: 0.95;
     }
 
     .stage-header {
@@ -385,12 +419,6 @@ st.markdown(textwrap.dedent("""
     .fill-gray {
         height: 100%;
         background: linear-gradient(90deg, #7f8aa3 0%, #98a3bb 100%);
-    }
-
-    .row-divider {
-        height: 1px;
-        background: #efedf4;
-        margin: 8px 0 12px 0;
     }
 </style>
 """), unsafe_allow_html=True)
@@ -527,7 +555,7 @@ with right:
         <div class="calendar-placeholder"></div>
     """)
 
-    for dia, titulo, sub, kind in eventos:
+    for dia, mes, titulo, sub, kind in eventos:
         event_class = {
             "blue": "event-blue",
             "light": "event-light",
@@ -536,8 +564,15 @@ with right:
 
         html += textwrap.dedent(f"""
         <div class="event-card {event_class}">
-            <div class="event-main">{dia} {titulo}</div>
-            <div class="event-sub">{sub}</div>
+            <div class="event-date">
+                <div class="event-day">{dia}</div>
+                <div class="event-month">{mes}</div>
+            </div>
+
+            <div class="event-info">
+                <div class="event-main">{titulo}</div>
+                <div class="event-sub">{sub}</div>
+            </div>
         </div>
         """)
 
@@ -564,7 +599,7 @@ html = textwrap.dedent("""
     </div>
 """)
 
-for idx, (nombre, institucion, solucion, vals) in enumerate(procesos):
+for nombre, institucion, solucion, vals in procesos:
     if institucion.upper() == "IMSS":
         badge_class = "inst-badge inst-imss"
         fill_class = "fill-blue"
