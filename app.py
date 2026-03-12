@@ -556,25 +556,28 @@ with right:
     """)
 
     for dia, mes, titulo, sub, kind in eventos:
-        event_class = {
-            "blue": "event-blue",
-            "light": "event-light",
-            "soft": "event-soft"
-        }[kind]
 
-        html += textwrap.dedent(f"""
-        <div class="event-card {event_class}">
-            <div class="event-date">
-                <div class="event-day">{dia}</div>
-                <div class="event-month">{mes}</div>
-            </div>
+    event_class = {
+        "blue": "event-blue",
+        "light": "event-light",
+        "soft": "event-soft"
+    }[kind]
 
-            <div class="event-info">
-                <div class="event-main">{titulo}</div>
-                <div class="event-sub">{sub}</div>
-            </div>
-        </div>
-        """)
+    html += f"""
+<div class="event-card {event_class}">
+<div class="event-date">
+<div class="event-day">{dia}</div>
+<div class="event-month">{mes}</div>
+</div>
+
+<div class="event-info">
+<div class="event-main">{titulo}</div>
+<div class="event-sub">{sub}</div>
+</div>
+</div>
+"""
+    
+
 
     html += "</div>"
     st.markdown(html, unsafe_allow_html=True)
