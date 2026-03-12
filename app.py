@@ -1,22 +1,17 @@
-
 import streamlit as st
 
-st.set_page_config(
-    page_title="Seguimiento Market Access",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
+st.set_page_config(page_title="Seguimiento Market Access", layout="wide")
 
 # =========================
-# DATOS MOCKUP
+# DATOS MOCK
 # =========================
 kpis = [
-    {"title": "CONTACTOS\nREALIZADOS", "value": "21", "color": "orange", "sub": "↑ +5 últimos 7 días"},
-    {"title": "INTERÉS\nCAPTURADO", "value": "13", "color": "blue", "sub": "↑ +5 últimos 7 días"},
-    {"title": "PRESENTACIONES\nPROGRAMADAS", "value": "8", "color": "white", "sub": ""},
-    {"title": "NECESIDADES\nGENERADAS", "value": "7", "color": "white", "sub": ""},
-    {"title": "CASOS ENVIADOS\nA SUPERIOR", "value": "5", "color": "white", "sub": ""},
-    {"title": "AUTORIZACIONES\nOBTENIDAS", "value": "3", "color": "white_orange", "sub": ""},
+    ("CONTACTOS\nREALIZADOS", "21", "↑ +5 últimos 7 días", "orange"),
+    ("INTERÉS\nCAPTURADO", "13", "↑ +5 últimos 7 días", "blue"),
+    ("PRESENTACIONES\nPROGRAMADAS", "8", "", "white"),
+    ("NECESIDADES\nGENERADAS", "7", "", "white"),
+    ("CASOS ENVIADOS\nA SUPERIOR", "5", "", "white"),
+    ("AUTORIZACIONES\nOBTENIDAS", "3", "", "white_orange"),
 ]
 
 instituciones = [
@@ -25,584 +20,499 @@ instituciones = [
     ("SEDENA", 50, "blue_dark"),
 ]
 
-cronograma = [
-    {
-        "nombre": "Dr. Miguel Ángel Sosa ACDx",
-        "inst": "",
-        "vals": [1.0, 0.8, 1.0, 0.0, 0.0],
-        "icon": "🩺"
-    },
-    {
-        "nombre": "Lic. Reyna Basilio",
-        "inst": "ISSSTE",
-        "vals": [1.0, 1.0, 0.5, 0.0, 0.0],
-        "icon": "🧑‍💼"
-    },
-    {
-        "nombre": "Dra. Rosa de Guadalupe BMP",
-        "inst": "",
-        "vals": [1.0, 1.0, 0.8, 0.0, 0.0],
-        "icon": "🧪"
-    },
-    {
-        "nombre": "Dra. Deta. BMP",
-        "inst": "IMSS",
-        "vals": [1.0, 1.0, 1.0, 0.0, 0.0],
-        "icon": "🧬"
-    },
-]
-
 eventos = [
-    {"dia": "11", "titulo": "Presentación IMSS", "sub": "Dr. Miguel 2", "tipo": "blue"},
-    {"dia": "17", "titulo": "Seguimiento ISSSTE", "sub": "Pora Basilio", "tipo": "light"},
-    {"dia": "21", "titulo": "Rovsión SEDENA", "sub": "Dra. Mesa Correa", "tipo": "soft"},
+    ("11", "Presentación IMSS", "Dr. Miguel 2", "blue"),
+    ("17", "Seguimiento ISSSTE", "Pora Basilio", "light"),
+    ("21", "Revisión SEDENA", "Dra. Mesa Correa", "soft"),
 ]
 
+procesos = [
+    ("🩺", "Dr. Miguel Ángel Sosa ACDx", [1.0, 0.8, 1.0, 0.0, 0.0]),
+    ("👩‍💼", "Lic. Reyna Basilio ISSSTE", [1.0, 1.0, 0.5, 0.0, 0.0]),
+    ("🧪", "Dra. Rosa de Guadalupe BMP", [1.0, 1.0, 0.8, 0.0, 0.0]),
+    ("🧬", "Dra. Deta. BMP IMSS", [1.0, 1.0, 1.0, 0.0, 0.0]),
+]
 
 # =========================
-# ESTILOS
+# CSS
 # =========================
 st.markdown("""
 <style>
-    .stApp {
-        background: #f4f3f8;
-    }
+.stApp {
+    background-color: #f3f2f7;
+}
 
-    .block-container {
-        padding-top: 1.3rem;
-        padding-bottom: 1rem;
-        max-width: 1450px;
-    }
+.block-container {
+    max-width: 1450px;
+    padding-top: 1.2rem;
+    padding-bottom: 1rem;
+}
 
-    :root {
-        --blue: #06038D;
-        --blue-2: #2E5FD0;
-        --orange: #E87722;
-        --black: #000000;
-        --white: #FFFFFF;
-        --soft-bg: #f4f3f8;
-        --card-border: #e3e1ea;
-        --muted: #707070;
-    }
+:root {
+    --blue: #06038D;
+    --orange: #E87722;
+    --dark: #222657;
+    --border: #dfdde8;
+    --text: #131a46;
+    --soft: #f7f7fb;
+}
 
-    .top-title {
-        background: linear-gradient(90deg, #1e2148 0%, #2d2f66 100%);
-        color: white;
-        border-radius: 4px;
-        padding: 16px 24px;
-        text-align: center;
-        font-size: 28px;
-        font-weight: 700;
-        letter-spacing: 0.3px;
-        margin-bottom: 12px;
-    }
+.title-bar {
+    background: linear-gradient(90deg, #232654 0%, #34306e 100%);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
 
-    .filters-wrap {
-        display: grid;
-        grid-template-columns: 270px 1fr 1fr 1fr 1fr 120px;
-        gap: 10px;
-        margin-bottom: 14px;
-        align-items: stretch;
-    }
+.top-icon-box {
+    background: #23008f;
+    color: white;
+    border-radius: 4px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-size: 18px;
+    font-weight: 600;
+}
 
-    .filter-left {
-        background: var(--blue);
-        color: white;
-        border-radius: 4px;
-        height: 42px;
-        display: flex;
-        align-items: center;
-        padding: 0 16px;
-        font-size: 19px;
-        gap: 12px;
-        justify-content: flex-start;
-    }
+.fake-filter {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    color: var(--text);
+    font-size: 16px;
+}
 
-    .fake-select {
-        background: white;
-        border: 1px solid var(--card-border);
-        border-radius: 4px;
-        height: 42px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 14px;
-        color: #1e2148;
-        font-size: 16px;
-    }
+.filter-btn {
+    background: #23008f;
+    color: white;
+    border-radius: 4px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+}
 
-    .fake-button {
-        background: var(--blue);
-        color: white;
-        border-radius: 4px;
-        height: 42px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        font-weight: 700;
-    }
+.kpi-card {
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    min-height: 150px;
+    padding: 14px 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
 
-    .kpi-grid {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 12px;
-        margin-bottom: 14px;
-    }
+.kpi-orange {
+    background: var(--orange);
+    color: white;
+}
 
-    .kpi-card {
-        border: 1px solid var(--card-border);
-        border-radius: 4px;
-        min-height: 150px;
-        padding: 16px 14px 12px 14px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
+.kpi-blue {
+    background: linear-gradient(135deg, #2f5fd0 0%, #4372e6 100%);
+    color: white;
+}
 
-    .kpi-orange {
-        background: var(--orange);
-        color: white;
-    }
+.kpi-white {
+    background: white;
+    color: var(--text);
+}
 
-    .kpi-blue {
-        background: linear-gradient(135deg, #2e5fd0 0%, #3f6de5 100%);
-        color: white;
-    }
+.kpi-white-orange {
+    background: white;
+    color: var(--orange);
+}
 
-    .kpi-white {
-        background: white;
-        color: #111b4d;
-    }
+.kpi-title {
+    white-space: pre-line;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.15;
+}
 
-    .kpi-white-orange {
-        background: white;
-        color: #111b4d;
-    }
+.kpi-value {
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1;
+    margin: 8px 0 6px 0;
+}
 
-    .kpi-title {
-        font-size: 18px;
-        font-weight: 700;
-        text-align: center;
-        line-height: 1.18;
-        white-space: pre-line;
-    }
+.kpi-sub {
+    font-size: 14px;
+    opacity: 0.95;
+}
 
-    .kpi-value {
-        font-size: 56px;
-        font-weight: 800;
-        text-align: center;
-        line-height: 1;
-        margin-top: 6px;
-        margin-bottom: 4px;
-    }
+.panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 18px;
+    height: 100%;
+}
 
-    .kpi-sub {
-        font-size: 14px;
-        text-align: center;
-        opacity: 0.95;
-    }
+.panel-title {
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 18px;
+}
 
-    .kpi-white-orange .kpi-title,
-    .kpi-white-orange .kpi-value {
-        color: var(--orange);
-    }
+.inst-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 80px;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+}
 
-    .main-grid {
-        display: grid;
-        grid-template-columns: 65% 35%;
-        gap: 14px;
-        margin-bottom: 14px;
-    }
+.inst-name {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+}
 
-    .panel {
-        background: white;
-        border: 1px solid var(--card-border);
-        border-radius: 4px;
-        padding: 14px 18px;
-    }
+.inst-name.orange {
+    color: var(--orange);
+}
 
-    .panel-title {
-        font-size: 22px;
-        font-weight: 700;
-        color: #1a214f;
-        margin-bottom: 18px;
-    }
+.bar-bg {
+    width: 100%;
+    height: 22px;
+    background: #eceaf4;
+    border-radius: 2px;
+    overflow: hidden;
+}
 
-    .inst-row {
-        display: grid;
-        grid-template-columns: 80px 1fr 80px;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 16px;
-    }
+.bar-fill-blue {
+    height: 100%;
+    background: linear-gradient(90deg, #4f79df 0%, #6187ea 100%);
+}
 
-    .inst-name {
-        font-size: 24px;
-        font-weight: 700;
-        color: #1a214f;
-    }
+.bar-fill-orange {
+    height: 100%;
+    background: linear-gradient(90deg, #f39a19 0%, #ff9e00 100%);
+}
 
-    .inst-name.orange {
-        color: var(--orange);
-    }
+.bar-fill-blue-dark {
+    height: 100%;
+    background: linear-gradient(90deg, #324d9c 0%, #4d67c0 100%);
+}
 
-    .bar-bg {
-        height: 22px;
-        background: #e8e7f0;
-        border-radius: 2px;
-        overflow: hidden;
-        position: relative;
-    }
+.pct {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+}
 
-    .bar-fill-blue {
-        height: 100%;
-        background: linear-gradient(90deg, #4a78df 0%, #507bf2 100%);
-    }
+.calendar-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
 
-    .bar-fill-orange {
-        height: 100%;
-        background: linear-gradient(90deg, #f39a19 0%, #ff9900 100%);
-    }
+.calendar-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+}
 
-    .bar-fill-blue-dark {
-        height: 100%;
-        background: linear-gradient(90deg, #324d9c 0%, #4663bc 100%);
-    }
+.nav-wrap {
+    display: flex;
+    gap: 8px;
+}
 
-    .pct {
-        font-size: 24px;
-        font-weight: 700;
-        color: #1a214f;
-    }
+.nav-btn {
+    width: 38px;
+    height: 32px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    background: white;
+    font-size: 20px;
+}
 
-    .calendar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 14px;
-    }
+.calendar-placeholder {
+    height: 95px;
+    background: #faf9fd;
+    border: 1px solid #efedf4;
+    border-radius: 4px;
+    margin-bottom: 14px;
+}
 
-    .calendar-title {
-        font-size: 22px;
-        font-weight: 700;
-        color: #1a214f;
-    }
+.event-card {
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+}
 
-    .calendar-nav {
-        display: flex;
-        gap: 8px;
-    }
+.event-blue {
+    background: linear-gradient(90deg, #2c56c7 0%, #395fd4 100%);
+    color: white;
+}
 
-    .nav-btn {
-        width: 38px;
-        height: 32px;
-        border: 1px solid var(--card-border);
-        border-radius: 4px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #1a214f;
-        background: white;
-        font-size: 22px;
-    }
+.event-light {
+    background: #edf3ff;
+    color: var(--text);
+}
 
-    .calendar-placeholder {
-        background: #faf9fd;
-        border: 1px solid #efedf4;
-        border-radius: 4px;
-        height: 98px;
-        margin-bottom: 14px;
-    }
+.event-soft {
+    background: #f1eff8;
+    color: var(--text);
+}
 
-    .event-card {
-        border-radius: 4px;
-        padding: 12px 14px;
-        margin-bottom: 10px;
-        line-height: 1.08;
-    }
+.event-main {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.1;
+}
 
-    .event-blue {
-        background: linear-gradient(90deg, #2c56c7 0%, #385fd2 100%);
-        color: white;
-    }
+.event-sub {
+    font-size: 14px;
+    line-height: 1.1;
+    margin-top: 2px;
+}
 
-    .event-light {
-        background: #edf4ff;
-        color: #1a214f;
-    }
+.stage-header {
+    display: grid;
+    grid-template-columns: 300px repeat(5, 1fr);
+    margin-bottom: 8px;
+}
 
-    .event-soft {
-        background: #f2f0fa;
-        color: #1a214f;
-    }
+.stage-name {
+    text-align: center;
+    color: var(--text);
+    font-size: 17px;
+    font-weight: 700;
+}
 
-    .event-main {
-        font-size: 19px;
-        font-weight: 700;
-        margin-bottom: 3px;
-    }
+.process-row {
+    display: grid;
+    grid-template-columns: 300px repeat(5, 1fr);
+    align-items: center;
+    margin-bottom: 12px;
+}
 
-    .event-sub {
-        font-size: 14px;
-        opacity: 0.95;
-    }
+.process-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    font-size: 17px;
+}
 
-    .cronograma-panel {
-        background: white;
-        border: 1px solid var(--card-border);
-        border-radius: 4px;
-        padding: 14px 18px 18px 18px;
-    }
+.proc-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    background: #eef2fb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    .stages-head {
-        display: grid;
-        grid-template-columns: 290px repeat(5, 1fr);
-        gap: 0;
-        margin-top: 6px;
-        margin-bottom: 8px;
-    }
+.proc-track {
+    height: 18px;
+    background: #eceaf4;
+    border-right: 1px solid #f8f7fb;
+}
 
-    .stage-cell {
-        font-size: 18px;
-        color: #1a214f;
-        text-align: center;
-    }
+.fill-blue {
+    height: 100%;
+    background: linear-gradient(90deg, #3e62c9 0%, #5572e2 100%);
+}
 
-    .process-row {
-        display: grid;
-        grid-template-columns: 290px repeat(5, 1fr);
-        gap: 0;
-        align-items: center;
-        margin-bottom: 12px;
-    }
+.fill-orange {
+    height: 100%;
+    background: linear-gradient(90deg, #f08d1d 0%, #ff9800 100%);
+}
 
-    .name-cell {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 17px;
-        color: #1a214f;
-    }
+.legend {
+    display: flex;
+    gap: 24px;
+    margin-top: 10px;
+    font-size: 16px;
+    color: var(--text);
+    align-items: center;
+}
 
-    .icon {
-        width: 28px;
-        height: 28px;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #eef2fb;
-        font-size: 16px;
-    }
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-    .mini-track {
-        height: 18px;
-        background: #ecebf3;
-        border-right: 1px solid #f6f4fa;
-        position: relative;
-    }
+.legend-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+}
 
-    .mini-fill-blue {
-        height: 100%;
-        background: linear-gradient(90deg, #3c61c7 0%, #506fe3 100%);
-    }
+.legend-imss {
+    background: linear-gradient(90deg, #5d84e5 0%, #87a6f5 100%);
+}
 
-    .mini-fill-orange {
-        height: 100%;
-        background: linear-gradient(90deg, #f08d1d 0%, #ff9700 100%);
-    }
-
-    .legend {
-        display: flex;
-        gap: 24px;
-        margin-top: 12px;
-        color: #1a214f;
-        font-size: 16px;
-        align-items: center;
-    }
-
-    .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .legend-box {
-        width: 18px;
-        height: 18px;
-        border-radius: 3px;
-    }
-
-    .blue-box { background: linear-gradient(90deg, #5d84e5 0%, #87a6f5 100%); }
-    .orange-box { background: linear-gradient(90deg, #f08d1d 0%, #ff9800 100%); }
-
-    @media (max-width: 1200px) {
-        .kpi-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        .main-grid {
-            grid-template-columns: 1fr;
-        }
-        .filters-wrap {
-            grid-template-columns: 1fr 1fr;
-        }
-        .stages-head, .process-row {
-            grid-template-columns: 1fr;
-        }
-    }
+.legend-issste {
+    background: linear-gradient(90deg, #f08d1d 0%, #ff9800 100%);
+}
 </style>
 """, unsafe_allow_html=True)
 
 # =========================
 # HEADER
 # =========================
-st.markdown(
-    '<div class="top-title">SEGUIMIENTO MARKET ACCESS – PROGRESO HACIA BASES</div>',
-    unsafe_allow_html=True
-)
+st.markdown('<div class="title-bar">SEGUIMIENTO MARKET ACCESS – PROGRESO HACIA BASES</div>', unsafe_allow_html=True)
 
-st.markdown("""
-<div class="filters-wrap">
-    <div class="filter-left">👤 🗂️ • • • • • • •</div>
-    <div class="fake-select"><span>Institución Pública</span><span>⌄</span></div>
-    <div class="fake-select"><span><b>Área</b></span><span>⌄</span></div>
-    <div class="fake-select"><span>Responsable Werfen</span><span>⌄</span></div>
-    <div class="fake-select"><span>Decisor Técnico</span><span>⌄</span></div>
-    <div class="fake-button">Filtrar</div>
-</div>
-""", unsafe_allow_html=True)
+c1, c2, c3, c4, c5, c6 = st.columns([1.4, 1.1, 1.1, 1.2, 1.2, 0.65])
+
+with c1:
+    st.markdown('<div class="top-icon-box">👤 📁 • • • • • • •</div>', unsafe_allow_html=True)
+with c2:
+    st.markdown('<div class="fake-filter"><span>Institución Pública</span><span>˅</span></div>', unsafe_allow_html=True)
+with c3:
+    st.markdown('<div class="fake-filter"><span><b>Área</b></span><span>˅</span></div>', unsafe_allow_html=True)
+with c4:
+    st.markdown('<div class="fake-filter"><span>Responsable Werfen</span><span>˅</span></div>', unsafe_allow_html=True)
+with c5:
+    st.markdown('<div class="fake-filter"><span>Decisor Técnico</span><span>˅</span></div>', unsafe_allow_html=True)
+with c6:
+    st.markdown('<div class="filter-btn">Filtrar</div>', unsafe_allow_html=True)
+
+st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
 
 # =========================
 # KPIS
 # =========================
-kpi_html = '<div class="kpi-grid">'
-for k in kpis:
+kpi_cols = st.columns(6)
+
+for col, (title, value, sub, kind) in zip(kpi_cols, kpis):
     cls = {
         "orange": "kpi-orange",
         "blue": "kpi-blue",
         "white": "kpi-white",
         "white_orange": "kpi-white-orange",
-    }[k["color"]]
+    }[kind]
 
-    kpi_html += f"""
+    html = f"""
     <div class="kpi-card {cls}">
-        <div class="kpi-title">{k["title"]}</div>
-        <div class="kpi-value">{k["value"]}</div>
-        <div class="kpi-sub">{k["sub"]}</div>
+        <div class="kpi-title">{title}</div>
+        <div class="kpi-value">{value}</div>
+        <div class="kpi-sub">{sub}</div>
     </div>
     """
-kpi_html += "</div>"
+    col.markdown(html, unsafe_allow_html=True)
 
-st.markdown(kpi_html, unsafe_allow_html=True)
+st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
 
 # =========================
-# AVANCE + AGENDA
+# AVANCE + CALENDARIO
 # =========================
-left_html = """
-<div class="panel">
-    <div class="panel-title">Avance hacia modificación de bases por institución</div>
-"""
+left, right = st.columns([2.1, 1.2])
 
-for nombre, pct, tipo in instituciones:
-    fill_class = {
-        "blue": "bar-fill-blue",
-        "orange": "bar-fill-orange",
-        "blue_dark": "bar-fill-blue-dark"
-    }[tipo]
-    name_class = "inst-name orange" if nombre == "ISSSTE" else "inst-name"
+with left:
+    html = '<div class="panel"><div class="panel-title">Avance hacia modificación de bases por institución</div>'
+    for nombre, pct, kind in instituciones:
+        bar_class = {
+            "blue": "bar-fill-blue",
+            "orange": "bar-fill-orange",
+            "blue_dark": "bar-fill-blue-dark"
+        }[kind]
+        name_class = "inst-name orange" if nombre == "ISSSTE" else "inst-name"
 
-    left_html += f"""
-    <div class="inst-row">
-        <div class="{name_class}">{nombre}</div>
-        <div class="bar-bg">
-            <div class="{fill_class}" style="width:{pct}%;"></div>
+        html += f"""
+        <div class="inst-row">
+            <div class="{name_class}">{nombre}</div>
+            <div class="bar-bg"><div class="{bar_class}" style="width:{pct}%"></div></div>
+            <div class="pct">{pct}%</div>
         </div>
-        <div class="pct">{pct}%</div>
-    </div>
-    """
+        """
+    html += "</div>"
+    st.markdown(html, unsafe_allow_html=True)
 
-left_html += "</div>"
-
-right_html = """
-<div class="panel">
-    <div class="calendar-header">
-        <div class="calendar-title">Junio 2024 ⌄</div>
-        <div class="calendar-nav">
-            <div class="nav-btn">‹</div>
-            <div class="nav-btn">›</div>
+with right:
+    html = """
+    <div class="panel">
+        <div class="calendar-head">
+            <div class="calendar-title">Junio 2024 ⌄</div>
+            <div class="nav-wrap">
+                <div class="nav-btn">‹</div>
+                <div class="nav-btn">›</div>
+            </div>
         </div>
-    </div>
-    <div class="calendar-placeholder"></div>
-"""
-
-for e in eventos:
-    tipo_class = {
-        "blue": "event-blue",
-        "light": "event-light",
-        "soft": "event-soft"
-    }[e["tipo"]]
-    right_html += f"""
-    <div class="event-card {tipo_class}">
-        <div class="event-main">{e['dia']} {e['titulo']}</div>
-        <div class="event-sub">{e['sub']}</div>
-    </div>
+        <div class="calendar-placeholder"></div>
     """
+    for dia, titulo, sub, kind in eventos:
+        event_class = {
+            "blue": "event-blue",
+            "light": "event-light",
+            "soft": "event-soft"
+        }[kind]
+        html += f"""
+        <div class="event-card {event_class}">
+            <div class="event-main">{dia} {titulo}</div>
+            <div class="event-sub">{sub}</div>
+        </div>
+        """
+    html += "</div>"
+    st.markdown(html, unsafe_allow_html=True)
 
-right_html += "</div>"
-
-st.markdown(
-    f"""
-    <div class="main-grid">
-        {left_html}
-        {right_html}
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
 
 # =========================
 # CRONOGRAMA
 # =========================
-cron_html = """
-<div class="cronograma-panel">
+html = """
+<div class="panel">
     <div class="panel-title">Cronograma de Procesos</div>
-
-    <div class="stages-head">
+    <div class="stage-header">
         <div></div>
-        <div class="stage-cell">Contactos</div>
-        <div class="stage-cell">Interés</div>
-        <div class="stage-cell">Presentación</div>
-        <div class="stage-cell">Necesidad</div>
-        <div class="stage-cell">Bases</div>
+        <div class="stage-name">Contactos</div>
+        <div class="stage-name">Interés</div>
+        <div class="stage-name">Presentación</div>
+        <div class="stage-name">Necesidad</div>
+        <div class="stage-name">Bases</div>
     </div>
 """
 
-for i, row in enumerate(cronograma):
-    cron_html += f"""
+for idx, (icono, nombre, vals) in enumerate(procesos):
+    html += f"""
     <div class="process-row">
-        <div class="name-cell">
-            <div class="icon">{row['icon']}</div>
-            <div>{row['nombre']}{"&nbsp;&nbsp;" + row['inst'] if row['inst'] else ""}</div>
+        <div class="process-name">
+            <div class="proc-icon">{icono}</div>
+            <div>{nombre}</div>
         </div>
     """
-
-    for j, v in enumerate(row["vals"]):
-        fill_class = "mini-fill-orange" if (i == 0 and j == 0) else "mini-fill-blue"
-        cron_html += f"""
-        <div class="mini-track">
-            <div class="{fill_class}" style="width:{int(v*100)}%;"></div>
+    for j, v in enumerate(vals):
+        fill_class = "fill-orange" if (idx == 0 and j == 0) else "fill-blue"
+        html += f"""
+        <div class="proc-track">
+            <div class="{fill_class}" style="width:{int(v*100)}%"></div>
         </div>
         """
+    html += "</div>"
 
-    cron_html += "</div>"
-
-cron_html += """
+html += """
     <div class="legend">
-        <div class="legend-item"><div class="legend-box blue-box"></div> IMSS</div>
-        <div class="legend-item"><div class="legend-box orange-box"></div> ISSSTE</div>
+        <div class="legend-item"><div class="legend-box legend-imss"></div> IMSS</div>
+        <div class="legend-item"><div class="legend-box legend-issste"></div> ISSSTE</div>
     </div>
 </div>
 """
 
-st.markdown(cron_html, unsafe_allow_html=True)
+st.markdown(html, unsafe_allow_html=True)
