@@ -32,10 +32,9 @@ eventos = [
 ]
 
 procesos = [
-    ("🩺", "Dr. Miguel Ángel Sosa ACDx", [1.0, 0.8, 1.0, 0.0, 0.0]),
-    ("👩‍💼", "Lic. Reyna Basilio ISSSTE", [1.0, 1.0, 0.5, 0.0, 0.0]),
-    ("🧪", "Dra. Rosa de Guadalupe BMP", [1.0, 1.0, 0.8, 0.0, 0.0]),
-    ("🧬", "Dra. Deta. BMP IMSS", [1.0, 1.0, 1.0, 0.0, 0.0]),
+    ("Dr. Miguel Ángel Sosa", "IMSS", "ACDx", [1.0, 0.8, 1.0, 0.0, 0.0]),
+    ("Lic. Reyna Basilio", "ISSSTE", "Coagulación", [1.0, 1.0, 0.5, 0.0, 0.0]),
+    ("Dra. Rosa Guadalupe", "SEDENA", "Gases", [1.0, 1.0, 0.8, 0.0, 0.0]),
 ]
 
 
@@ -296,42 +295,58 @@ st.markdown(textwrap.dedent("""
     }
 
     .stage-header {
-        display: grid;
-        grid-template-columns: 300px repeat(5, 1fr);
-        margin-bottom: 8px;
-    }
+    display: grid;
+    grid-template-columns: 2.2fr 1fr 1.3fr repeat(5, 1fr);
+    margin-bottom: 8px;
+    column-gap: 8px;
+    align-items: center;
+}
 
-    .stage-name {
-        text-align: center;
-        color: var(--text);
-        font-size: 17px;
-        font-weight: 700;
-    }
+.process-row {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr 1.3fr repeat(5, 1fr);
+    align-items: center;
+    margin-bottom: 12px;
+    column-gap: 8px;
+}
 
-    .process-row {
-        display: grid;
-        grid-template-columns: 300px repeat(5, 1fr);
-        align-items: center;
-        margin-bottom: 12px;
-    }
+.text-cell {
+    color: var(--text);
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    min-height: 18px;
+}
 
-    .process-name {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--text);
-        font-size: 17px;
-    }
+.inst-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    width: fit-content;
+}
 
-    .proc-icon {
-        width: 28px;
-        height: 28px;
-        border-radius: 4px;
-        background: #eef2fb;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+.inst-imss {
+    background: #eaf0ff;
+    color: #315fd3;
+}
+
+.inst-issste {
+    background: #fff1e7;
+    color: #e87722;
+}
+
+.inst-sedena {
+    background: #eef1f4;
+    color: #364152;
+}
+
+.sol-cell {
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 600;
+}
 
     .proc-track {
         height: 18px;
